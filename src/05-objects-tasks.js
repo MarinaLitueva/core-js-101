@@ -20,8 +20,10 @@
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
+function Rectangle(width, height) {
+  this.width = width;
+  this.height = height;
+  this.getArea = () => this.width * this.height;
 }
 
 
@@ -35,8 +37,8 @@ function Rectangle(/* width, height */) {
  *    [1,2,3]   =>  '[1,2,3]'
  *    { width: 10, height : 20 } => '{"height":10,"width":20}'
  */
-function getJSON(/* obj */) {
-  throw new Error('Not implemented');
+function getJSON(obj) {
+  return JSON.stringify(obj);
 }
 
 
@@ -51,8 +53,8 @@ function getJSON(/* obj */) {
  *    const r = fromJSON(Circle.prototype, '{"radius":10}');
  *
  */
-function fromJSON(/* proto, json */) {
-  throw new Error('Not implemented');
+function fromJSON(proto, json) {
+  return Object.setPrototypeOf(JSON.parse(json), proto);
 }
 
 
@@ -110,33 +112,105 @@ function fromJSON(/* proto, json */) {
  *  For more examples see unit tests.
  */
 
+
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  result: {},
+  map: new Map([
+    ['element', 1],
+    ['id', 2],
+    ['class', 3],
+    ['attr', 4],
+    ['pseudo', 5],
+    ['pseudoElement', 6],
+  ]),
+
+  element(value) {
+    if (this.result.element) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+
+    const newResult = { ...this.result, element: value };
+    this.validate(newResult);
+    return { ...this, result: newResult };
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    if (this.result.id) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+
+    const newResult = { ...this.result, id: `#${value}` };
+    this.validate(newResult);
+    return { ...this, result: newResult };
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    let classArr = [];
+    if (this.result.class) {
+      classArr = [...this.result.class];
+    } else {
+      classArr = [];
+    }
+    const newResult = { ...this.result, class: [classArr.join(''), `.${value}`] };
+    this.validate(newResult);
+    return { ...this, result: newResult };
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    let attrArr = [];
+    if (this.result.attr) {
+      attrArr = [...this.result.attr];
+    } else {
+      attrArr = [];
+    }
+    const newResult = { ...this.result, attr: [attrArr.join(''), `[${value}]`] };
+    this.validate(newResult);
+    return { ...this, result: newResult };
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    let pseudoArr = [];
+    if (this.result.pseudo) {
+      pseudoArr = [...this.result.pseudo];
+    } else {
+      pseudoArr = [];
+    }
+    const newResult = { ...this.result, pseudo: [pseudoArr.join(''), `:${value}`] };
+    this.validate(newResult);
+    return { ...this, result: newResult };
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    if (this.result.pseudoElement) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+    let pseudoArr = [];
+    if (this.result.pseudoElement) {
+      pseudoArr = [...this.result.pseudoElement];
+    } else {
+      pseudoArr = [];
+    }
+    const newResult = { ...this.result, pseudoElement: [pseudoArr.join(''), `::${value}`] };
+    this.validate(newResult);
+    return { ...this, result: newResult };
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  combine(selector1, combinator, selector2) {
+    const newResult = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+    return { ...this, result: newResult };
+  },
+
+  stringify() {
+    return Object.values(this.result).flat().join('');
+  },
+
+  validate(arr) {
+    const validArr = Object.keys(arr);
+    for (let i = 0; i < validArr.length; i += 1) {
+      if (this.map.get(validArr[i]) > this.map.get(validArr[i + 1])) {
+        throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+      }
+    }
   },
 };
 

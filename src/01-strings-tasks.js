@@ -18,8 +18,8 @@
  *   'aa',''    => 'aa'
  *   '',  'bb'  => 'bb'
  */
-function concatenateStrings(/* value1, value2 */) {
-  throw new Error('Not implemented');
+function concatenateStrings(value1, value2) {
+  return value1 + value2;
 }
 
 
@@ -34,8 +34,8 @@ function concatenateStrings(/* value1, value2 */) {
  *   'b'     => 1
  *   ''      => 0
  */
-function getStringLength(/* value */) {
-  throw new Error('Not implemented');
+function getStringLength(value) {
+  return +value.length;
 }
 
 /**
@@ -51,22 +51,23 @@ function getStringLength(/* value */) {
  *   'John','Doe'      => 'Hello, John Doe!'
  *   'Chuck','Norris'  => 'Hello, Chuck Norris!'
  */
-function getStringFromTemplate(/* firstName, lastName */) {
-  throw new Error('Not implemented');
+function getStringFromTemplate(firstName, lastName) {
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
  * Extracts a name from template string 'Hello, First_Name Last_Name!'.
  *
  * @param {string} value
- * @return {string}
+ * @return {string[]}
  *
  * @example
  *   'Hello, John Doe!' => 'John Doe'
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  const arr = value.split(',');
+  return arr[1].slice(0, -1).trim();
 }
 
 
@@ -80,8 +81,8 @@ function extractNameFromTemplate(/* value */) {
  *   'John Doe'  => 'J'
  *   'cat'       => 'c'
  */
-function getFirstChar(/* value */) {
-  throw new Error('Not implemented');
+function getFirstChar(value) {
+  return value[0];
 }
 
 /**
@@ -95,8 +96,8 @@ function getFirstChar(/* value */) {
  *   'cat'              => 'cat'
  *   '\tHello, World! ' => 'Hello, World!'
  */
-function removeLeadingAndTrailingWhitespaces(/* value */) {
-  throw new Error('Not implemented');
+function removeLeadingAndTrailingWhitespaces(value) {
+  return value.trim();
 }
 
 /**
@@ -110,8 +111,8 @@ function removeLeadingAndTrailingWhitespaces(/* value */) {
  *   'A', 5  => 'AAAAA'
  *   'cat', 3 => 'catcatcat'
  */
-function repeatString(/* value, count */) {
-  throw new Error('Not implemented');
+function repeatString(value, count) {
+  return value.repeat((count));
 }
 
 /**
@@ -126,8 +127,8 @@ function repeatString(/* value, count */) {
  *   'I like legends', 'end' => 'I like legs',
  *   'ABABAB','BA' => 'ABAB'
  */
-function removeFirstOccurrences(/* str, value */) {
-  throw new Error('Not implemented');
+function removeFirstOccurrences(str, value) {
+  return str.replace((`${value}`), '');
 }
 
 /**
@@ -141,8 +142,8 @@ function removeFirstOccurrences(/* str, value */) {
  *   '<span>' => 'span'
  *   '<a>' => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  return str.replace(/[<>]/g, '');
 }
 
 
@@ -156,8 +157,8 @@ function unbracketTag(/* str */) {
  *   'Thunderstruck' => 'THUNDERSTRUCK'
  *  'abcdefghijklmnopqrstuvwxyz' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
  */
-function convertToUpperCase(/* str */) {
-  throw new Error('Not implemented');
+function convertToUpperCase(str) {
+  return str.toUpperCase();
 }
 
 /**
@@ -175,8 +176,8 @@ function convertToUpperCase(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  return str.split(';');
 }
 
 /**
@@ -203,7 +204,14 @@ function extractEmails(/* str */) {
  *
  */
 function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+  /* const w = '\u2500'.repeat(width);
+  const h = (`\u2502${' '.repeat(width)}\u2502`);
+
+  const str1 = `\u250C${w}\u2510`;
+
+
+  const str2 = `\u2514${w}\u2518`;
+  return str1 + h + str2; */
 }
 
 
@@ -223,13 +231,77 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const map = new Map();
+  map.set('A', 'N');
+  map.set('B', 'O');
+  map.set('C', 'P');
+  map.set('D', 'Q');
+  map.set('E', 'R');
+  map.set('F', 'S');
+  map.set('G', 'T');
+  map.set('H', 'U');
+  map.set('I', 'V');
+  map.set('J', 'W');
+  map.set('K', 'X');
+  map.set('L', 'Y');
+  map.set('M', 'Z');
+  map.set('N', 'A');
+  map.set('O', 'B');
+  map.set('P', 'C');
+  map.set('Q', 'D');
+  map.set('R', 'E');
+  map.set('S', 'F');
+  map.set('T', 'G');
+  map.set('U', 'H');
+  map.set('V', 'I');
+  map.set('W', 'J');
+  map.set('X', 'K');
+  map.set('Y', 'L');
+  map.set('Z', 'M');
+  map.set('a', 'n');
+  map.set('b', 'o');
+  map.set('c', 'p');
+  map.set('d', 'q');
+  map.set('e', 'r');
+  map.set('f', 's');
+  map.set('g', 't');
+  map.set('h', 'u');
+  map.set('i', 'v');
+  map.set('j', 'w');
+  map.set('k', 'x');
+  map.set('l', 'y');
+  map.set('m', 'z');
+  map.set('n', 'a');
+  map.set('o', 'b');
+  map.set('p', 'c');
+  map.set('q', 'd');
+  map.set('r', 'e');
+  map.set('s', 'f');
+  map.set('t', 'g');
+  map.set('u', 'h');
+  map.set('v', 'i');
+  map.set('w', 'j');
+  map.set('x', 'k');
+  map.set('y', 'l');
+  map.set('z', 'm');
+  map.set(' ', ' ');
+  map.set(',', ',');
+  map.set('!', '!');
+  map.set('?', '?');
+
+  let result = '';
+
+  for (let i = 0; i < str.length; i += 1) {
+    const symbol = map.get(str[i]);
+    result += symbol;
+  }
+  return result;
 }
 
 /**
  * Returns true if the value is string; otherwise false.
- * @param {string} value
+ * @param {strithrow new Error('Not implemented');ng} value
  * @return {boolean}
  *
  * @example
@@ -240,10 +312,12 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  if ((typeof value === 'string') || (value instanceof String)) {
+    return true;
+  }
+  return false;
 }
-
 
 /**
  * Returns playid card id.
@@ -269,8 +343,14 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const item = [
+    'A♣', '2♣', '3♣', '4♣', '5♣', '6♣', '7♣', '8♣', '9♣', '10♣', 'J♣', 'Q♣', 'K♣',
+    'A♦', '2♦', '3♦', '4♦', '5♦', '6♦', '7♦', '8♦', '9♦', '10♦', 'J♦', 'Q♦', 'K♦',
+    'A♥', '2♥', '3♥', '4♥', '5♥', '6♥', '7♥', '8♥', '9♥', '10♥', 'J♥', 'Q♥', 'K♥',
+    'A♠', '2♠', '3♠', '4♠', '5♠', '6♠', '7♠', '8♠', '9♠', '10♠', 'J♠', 'Q♠', 'K♠',
+  ];
+  return item.indexOf(value);
 }
 
 
