@@ -90,10 +90,15 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return false;
+  }
+  if (a + b > c && a + c > b && c + b > a) {
+    return true;
+  }
+  return false;
 }
-
 
 /**
  * Returns true, if two specified axis-aligned rectangles overlap, otherwise false.
@@ -221,8 +226,35 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const arr = [];
+  arr.push(a, b);
+
+  const sortArr = arr.sort((c, d) => c - d);
+  const str = sortArr.join(', ');
+
+  let result = '';
+
+  if (isStartIncluded && isEndIncluded) {
+    result = `[${str}]`;
+    return result;
+  }
+
+  if (!isStartIncluded && !isEndIncluded) {
+    result = `(${str})`;
+    return result;
+  }
+
+  if (!isStartIncluded && isEndIncluded) {
+    result = `(${str}]`;
+    return result;
+  }
+
+  if (isStartIncluded && !isEndIncluded) {
+    result = `[${str})`;
+    return result;
+  }
+  return result;
 }
 
 
